@@ -99,16 +99,16 @@ export default function WorkOrderList() {
       render: (val) => val || '-',
     },
       {
-      title: '??',
+      title: '删除',
       key: 'action',
       width: 80,
       render: (_, record) => (
         <Popconfirm
-          title="??????????"
+          title="确定要删除该工单吗？"
           onConfirm={(e) => { e?.stopPropagation(); handleDelete(record.id); }}
           onCancel={(e) => e?.stopPropagation()}
         >
-          <Button type="link" size="small" danger onClick={(e) => e.stopPropagation()}>??</Button>
+          <Button type="link" size="small" danger onClick={(e) => e.stopPropagation()}>删除</Button>
         </Popconfirm>
       ),
     },
