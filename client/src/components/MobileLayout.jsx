@@ -38,7 +38,8 @@ export default function MobileLayout() {
   const canWorkOrders = admin || wh || mt;
   const tabs = allTabs.filter(function(t) {
     if (admin) return true;
-    if (t.key === '/inventory' || t.key === '/parts') return admin || wh;
+    if (t.key === '/inventory') return admin || wh;
+    if (t.key === '/parts') return admin || wh || mt;
     if (t.key === '/purchases') return canPurchases;
     if (t.key === '/work-orders') return canWorkOrders;
     if (t.key === '/tools') return true;

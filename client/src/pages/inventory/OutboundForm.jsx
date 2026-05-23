@@ -168,7 +168,7 @@ export default function OutboundForm() {
                   >
                     <Select
                       showSearch
-                      style={{ width: 200 }}
+                      style={{ width: '100%', minWidth: 240 }}
                       placeholder="选择备件"
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -198,7 +198,7 @@ export default function OutboundForm() {
                   >
                     <Select
                       showSearch
-                      style={{ width: 180 }}
+                      style={{ width: '100%', minWidth: 220 }}
                       placeholder="选择库位"
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -225,7 +225,7 @@ export default function OutboundForm() {
                   <Form.Item {...restField} name={[name, 'work_order_id']}>
                     <Select
                       showSearch
-                      style={{ width: 160 }}
+                      style={{ width: '100%', minWidth: 200 }}
                       placeholder="工单（可选）"
                       allowClear
                       filterOption={(input, option) =>

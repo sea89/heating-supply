@@ -136,7 +136,7 @@ export default function InboundForm() {
           <Form.Item label="关联采购单">
             <Select
               showSearch
-              style={{ maxWidth: 400 }}
+              style={{ maxWidth: 450, width: '100%' }}
               placeholder="选择采购单自动填充（可选）"
               allowClear
               value={selectedPurchaseOrderId}
@@ -167,7 +167,7 @@ export default function InboundForm() {
                   >
                     <Select
                       showSearch
-                      style={{ width: 220 }}
+                      style={{ width: '100%', minWidth: 260 }}
                       placeholder="选择备件"
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -197,7 +197,7 @@ export default function InboundForm() {
                   >
                     <Select
                       showSearch
-                      style={{ width: 200 }}
+                      style={{ width: '100%', minWidth: 240 }}
                       placeholder="选择库位"
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -211,7 +211,7 @@ export default function InboundForm() {
                   <Form.Item {...restField} name={[name, 'supplier_id']}>
                     <Select
                       showSearch
-                      style={{ width: 180 }}
+                      style={{ width: '100%', minWidth: 220 }}
                       placeholder="供应商（可选）"
                       allowClear
                       filterOption={(input, option) =>
