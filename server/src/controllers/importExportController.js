@@ -639,7 +639,7 @@ export const uploadImport = async (req, res, next) => {
               category_id,
               min_stock: row.min_stock != null && row.min_stock !== '' ? Number(row.min_stock) : null,
               max_stock: row.max_stock != null && row.max_stock !== '' ? Number(row.max_stock) : null,
-            });
+            }).onConflict('code').ignore().returning('id');
 
             // Handle stock_quantity if provided (initial stock)
             const stockQty = row.stock_quantity != null && row.stock_quantity !== ''
