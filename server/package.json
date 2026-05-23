@@ -1,0 +1,28 @@
+﻿{
+  "name": "heating-supply-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "migrate": "knex migrate:latest --knexfile db/knexfile.cjs",
+    "seed": "knex seed:run --knexfile db/knexfile.cjs",
+    "test": "vitest run --config vitest.config.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.6"
+  }
+}
+
