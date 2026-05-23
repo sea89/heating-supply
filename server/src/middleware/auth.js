@@ -19,7 +19,7 @@ export function requireAccess(readRoles, writeRoles) {
     if (!req.user) return res.status(401).json({ error: '未登录' });
     const isRead = ['GET', 'HEAD', 'OPTIONS'].includes(req.method);
     const allowed = isRead ? readRoles : writeRoles;
-    if (allowed.includes('admin')) return next();
+    if (req.user.role === 'admin') return next();
     if (allowed.includes(req.user.role)) return next();
     return res.status(403).json({ error: '权限不足' });
   };
