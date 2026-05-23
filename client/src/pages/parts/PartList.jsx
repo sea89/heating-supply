@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Table, Card, Input, TreeSelect, Button, Tag, Space, message } from 'antd';
 import { PlusOutlined, SearchOutlined, UploadOutlined, DownloadOutlined, FileTextOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -186,7 +186,7 @@ export default function PartList() {
       formData.append('file', file);
       try {
         await api.post('/api/import-export/upload', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          // Content-Type is automatically set by axios for FormData
         });
         message.success('导入成功');
         fetchData();

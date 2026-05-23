@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Card, Button, Form, Input, InputNumber, Select, Space, message } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,6 +15,7 @@ export default function OutboundForm() {
   const [locations, setLocations] = useState([]);
   const [workOrders, setWorkOrders] = useState([]);
   const [stockMap, setStockMap] = useState({});
+  const [stockData, setStockData] = useState([]);
   const [loadedWorkOrder, setLoadedWorkOrder] = useState(false);
   const [presetWorkOrderInfo, setPresetWorkOrderInfo] = useState(null);
 
@@ -55,6 +56,7 @@ export default function OutboundForm() {
         map[key] = item.quantity || 0;
       });
       setStockMap(map);
+      setStockData(stockData);
     } catch {
       // silently ignore
     }
@@ -201,10 +203,16 @@ export default function OutboundForm() {
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                       }
-                      options={locations.map((l) => ({
-                        label: `${l.warehouse || ''} ${l.shelf || ''} ${l.bin || ''}`.trim(),
-                        value: l.id,
-                      }))}
+                      notFoundContent="请先选择备件"
+                      options={((() => {
+                        const partId = form.getFieldValue(['items', name, 'part_id']);
+                        if (!partId) return [];
+                        const stockRows = stockData.filter(s => s.part_id === partId && Number(s.quantity) > 0);
+                        return stockRows.map(s => ({
+                          label: `${s.warehouse || ''} ${s.shelf || ''} ${s.bin || ''}`.trim() + ` (库存: ${s.quantity})`,
+                          value: s.location_id,
+                        }));
+                      })())}
                     />
                   </Form.Item>
                   <Form.Item

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Row, Col, Card, Statistic, Tag, List, Space, message, Spin } from 'antd';
 import {
   InboxOutlined, WarningOutlined, FileTextOutlined, ToolOutlined,
@@ -20,7 +20,8 @@ const quickLinks = [
   { title: '出库登记', path: '/inventory/outbound', icon: <ArrowUpOutlined />, color: '#FA8C16', desc: '备件出库操作' },
   { title: '新建工单', path: '/work-orders/new', icon: <PlusOutlined />, color: '#1677FF', desc: '创建维修工单' },
   { title: '新建采购单', path: '/purchases/new', icon: <ShoppingCartOutlined />, color: '#722ED1', desc: '发起采购申请' },
-  { title: '工具管理', path: '/tools', icon: <ToolOutlined />, color: '#13C2C2', desc: '工具借用与归还' },
+  { title: '借用登记', path: '/tools/borrow', icon: <ToolOutlined />, color: '#13C2C2', desc: '工具借用登记' },
+  { title: '工具管理', path: '/tools', icon: <ToolOutlined />, color: '#13C2C2', desc: '工具列表与归还' },
 ];
 
 const statCards = [
