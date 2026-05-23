@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card, Descriptions, Tag, Button, Space, message, Modal, Input, Form } from 'antd';
-import { LogoutOutlined, ToolOutlined, FileTextOutlined, ShoppingCartOutlined, EnvironmentOutlined, KeyOutlined, SettingOutlined } from '@ant-design/icons';
+import { LogoutOutlined, ToolOutlined, FileTextOutlined, ShoppingCartOutlined, EnvironmentOutlined, KeyOutlined, SettingOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
@@ -21,6 +21,8 @@ const commonLinks = [
     { title: '系统分类', path: '/basic-data/system-categories', icon: <SettingOutlined /> },
     { title: '设备台账', path: '/basic-data/equipment', icon: <FileTextOutlined /> },
     { title: '供应商', path: '/basic-data/suppliers', icon: <ShoppingCartOutlined /> },
+    { title: '人员管理', path: '/basic-data/personnel', icon: <TeamOutlined /> },
+    { title: '账号管理', path: '/basic-data/accounts', icon: <UserOutlined /> },
   ];
 
 const roleLinks = {

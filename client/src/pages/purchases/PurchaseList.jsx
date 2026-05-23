@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
-import { Table, Card, Tabs, Tag, Button, Space, message, Tooltip } from 'antd';
+import { Table, Card, Tabs, Tag, Button, Space, message, Tooltip, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/client';
@@ -67,6 +67,16 @@ export default function PurchaseList() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [status, setStatus] = useState('');
+
+  const handleDelete = async (id) => {
+    try {
+      await api.delete('/api/purchases/' + id);
+      message.success('删除成功');
+      fetchData();
+    } catch (err) {
+      message.error(err.response?.data?.error || '删除失败');
+    }
+  };
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -174,6 +184,22 @@ export default function PurchaseList() {
       width: 150,
       responsive: ['md'],
       render: (val) => val || '-',
+    },
+    {
+      title: '操作',
+      key: 'action',
+      width: 80,
+      render: (_, record) => (
+        <Popconfirm
+          title="确定要删除该采购单吗？"
+          onConfirm={(e) => { e?.stopPropagation(); handleDelete(record.id); }}
+          onCancel={(e) => e?.stopPropagation()}
+        >
+          <Button type="link" size="small" danger onClick={(e) => e.stopPropagation()}>
+            删除
+          </Button>
+        </Popconfirm>
+      ),
     },
   ];
 

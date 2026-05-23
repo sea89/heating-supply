@@ -35,6 +35,7 @@ export default function MobileLayout() {
   const getQuickActions = () => {
     const path = location.pathname;
     if (path.startsWith('/parts')) return '/parts/new';
+    if (path.startsWith('/inventory') && path.includes('outbound')) return '/inventory/outbound';
     if (path.startsWith('/inventory')) return '/inventory/inbound';
     if (path.startsWith('/purchases')) return '/purchases/new';
     if (path.startsWith('/work-orders')) return '/work-orders/new';

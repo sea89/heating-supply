@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
-import { Table, Card, Tabs, Tag, Button, Space, message } from 'antd';
+import { Table, Card, Tabs, Tag, Button, Space, message, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/client';
@@ -22,6 +22,16 @@ export default function WorkOrderList() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [status, setStatus] = useState('');
+
+  const handleDelete = async (id) => {
+    try {
+      await api.delete('/api/work-orders/' + id);
+      message.success('删除成功');
+      fetchData();
+    } catch (err) {
+      message.error(err.response?.data?.error || '删除失败');
+    }
+  };
 
   const fetchData = useCallback(async () => {
     setLoading(true);

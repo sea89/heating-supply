@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
-import { Table, Card, Input, TreeSelect, Button, Tag, Space, message } from 'antd';
-import { PlusOutlined, SearchOutlined, UploadOutlined, DownloadOutlined, FileTextOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { Table, Card, Input, TreeSelect, Button, Tag, Space, message, Popconfirm } from 'antd';
+import { PlusOutlined, SearchOutlined, UploadOutlined, DownloadOutlined, FileTextOutlined, ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/client';
 
@@ -78,14 +78,12 @@ export default function PartList() {
       dataIndex: 'model',
       key: 'model',
       responsive: ['md'],
-      responsive: ['md'],
       
     },
     {
       title: '分类',
       dataIndex: 'category_name',
       key: 'category_name',
-      responsive: ['md'],
       responsive: ['md'],
       
     },
@@ -95,7 +93,6 @@ export default function PartList() {
       key: 'unit_price',
       width: 100,
       responsive: ['md'],
-      responsive: ['md'],
       render: (val) => val != null ? `¥${Number(val).toFixed(2)}` : '-',
       
     },
@@ -103,7 +100,6 @@ export default function PartList() {
       title: '库存总价(元)',
       key: 'total_value',
       width: 120,
-      responsive: ['md'],
       responsive: ['md'],
       render: (_, record) => {
         const total = (record.current_stock || 0) * (record.unit_price || 0);
@@ -118,7 +114,6 @@ export default function PartList() {
       dataIndex: 'unit',
       key: 'unit',
       width: 80,
-      responsive: ['md'],
       responsive: ['md'],
       
     },
@@ -141,7 +136,6 @@ export default function PartList() {
       key: 'action',
       width: 160,
       responsive: ['md'],
-      responsive: ['md'],
       render: (_, record) => (
         <Space size="small">
           <Button
@@ -160,6 +154,14 @@ export default function PartList() {
           >
             出库
           </Button>
+          <Popconfirm
+            title="确定要删除该备件吗？"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <Button type="link" size="small" danger icon={<DeleteOutlined />}>
+              删除
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -185,6 +187,16 @@ export default function PartList() {
 
   const handleExport = () => {
     downloadFile('/api/import-export/download?type=parts', '备件数据.xlsx');
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await api.delete('/api/parts/' + id);
+      message.success('删除成功');
+      fetchData();
+    } catch (err) {
+      message.error(err.response?.data?.error || '删除失败');
+    }
   };
 
   const handleImport = () => {
