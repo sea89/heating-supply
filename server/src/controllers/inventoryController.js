@@ -268,3 +268,14 @@ export const transactions = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+
+
+export const deleteStock = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const record = await db('stock_records').where({ id }).first();
+    if (!record) return res.status(404).json({ error: '\u5e93\u5b58\u8bb0\u5f55\u4e0d\u5b58\u5728' });
+    await db('stock_records').where({ id }).del();
+    res.json({ success: true });
+  } catch (err) { next(err); }
+};

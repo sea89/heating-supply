@@ -11,5 +11,6 @@ router.get('/transactions', authenticate, ctrl.transactions);
 router.post('/inbound', authenticate, validate({ items: { required: true, type: 'array', message: '请添加入库项' } }), ctrl.inbound);
 router.post('/outbound', authenticate, validate({ items: { required: true, type: 'array', message: '请添加出库项' } }), ctrl.outbound);
 router.put('/stock', authenticate, ctrl.adjustStock);
+router.delete('/stock/:id', authenticate, ctrl.deleteStock);
 
 export default router;
