@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
 import { Table, Card, Tabs, Tag, Button, Space, message, Popconfirm } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/client';
 
@@ -97,6 +97,20 @@ export default function WorkOrderList() {
       key: 'created_at',
       width: 160,
       render: (val) => val || '-',
+    },
+      {
+      title: '??',
+      key: 'action',
+      width: 80,
+      render: (_, record) => (
+        <Popconfirm
+          title="??????????"
+          onConfirm={(e) => { e?.stopPropagation(); handleDelete(record.id); }}
+          onCancel={(e) => e?.stopPropagation()}
+        >
+          <Button type="link" size="small" danger onClick={(e) => e.stopPropagation()}>??</Button>
+        </Popconfirm>
+      ),
     },
   ];
 
