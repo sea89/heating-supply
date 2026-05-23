@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Card, Table, Select, DatePicker, Tag, Space, message } from 'antd';
 import api from '../../api/client';
 
@@ -87,14 +87,14 @@ export default function TransactionLog() {
       width: 180,
       render: (_, record) =>
         [record.warehouse, record.shelf, record.bin].filter(Boolean).join(' / ') || '-',
-      responsive: ['md'],
+      //
     },
     {
       title: '供应商/领用人',
       key: 'party',
       width: 140,
       render: (_, record) => record.supplier_name || record.recipient || '-',
-      responsive: ['sm'],
+      //
     },
     {
       title: '备注',

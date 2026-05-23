@@ -77,13 +77,13 @@ export default function PartList() {
       title: '型号',
       dataIndex: 'model',
       key: 'model',
-      responsive: ['md'],
+      
     },
     {
       title: '分类',
       dataIndex: 'category_name',
       key: 'category_name',
-      responsive: ['md'],
+      
     },
     {
       title: '单价(元)',
@@ -91,7 +91,7 @@ export default function PartList() {
       key: 'unit_price',
       width: 100,
       render: (val) => val != null ? `¥${Number(val).toFixed(2)}` : '-',
-      responsive: ['md'],
+      
     },
     {
       title: '库存总价(元)',
@@ -103,14 +103,14 @@ export default function PartList() {
           ? <span style={{ fontWeight: 500, color: '#722ed1' }}>¥{total.toFixed(2)}</span>
           : '-';
       },
-      responsive: ['md'],
+      
     },
     {
       title: '单位',
       dataIndex: 'unit',
       key: 'unit',
       width: 80,
-      responsive: ['sm'],
+      
     },
     {
       title: '库存',

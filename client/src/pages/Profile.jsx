@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card, Descriptions, Tag, Button, Space, message, Modal, Input, Form } from 'antd';
-import { LogoutOutlined, ToolOutlined, FileTextOutlined, ShoppingCartOutlined, EnvironmentOutlined, KeyOutlined } from '@ant-design/icons';
+import { LogoutOutlined, ToolOutlined, FileTextOutlined, ShoppingCartOutlined, EnvironmentOutlined, KeyOutlined, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
@@ -16,6 +16,12 @@ const roleColors = {
   warehouse: 'green',
   procurement: 'orange',
 };
+
+const commonLinks = [
+    { title: '系统分类', path: '/basic-data/system-categories', icon: <SettingOutlined /> },
+    { title: '设备台账', path: '/basic-data/equipment', icon: <FileTextOutlined /> },
+    { title: '供应商', path: '/basic-data/suppliers', icon: <ShoppingCartOutlined /> },
+  ];
 
 const roleLinks = {
   maintenance: [
@@ -41,7 +47,7 @@ export default function Profile() {
     navigate('/login');
   };
 
-  const links = roleLinks[user?.role] || [];
+  const links = [...(roleLinks[user?.role] || []), ...(user?.role==='admin'||user?.role==='warehouse'?commonLinks:[])];
 
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
   const [passwordForm] = Form.useForm();

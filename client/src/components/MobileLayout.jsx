@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+﻿import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   AppstoreOutlined,
   DatabaseOutlined,
@@ -8,6 +8,7 @@ import {
   SettingOutlined,
   DashboardOutlined,
   PlusOutlined,
+  ShoppingCartOutlined,
 } from '@ant-design/icons';
 import { FloatButton } from 'antd';
 
@@ -15,7 +16,7 @@ const tabs = [
   { key: '/', label: '首页', icon: <DashboardOutlined /> },
   { key: '/parts', label: '备件', icon: <AppstoreOutlined /> },
   { key: '/inventory', label: '库存', icon: <DatabaseOutlined /> },
-  { key: '/tools', label: '工具', icon: <ToolOutlined /> },
+  { key: '/purchases', label: '采购', icon: <ShoppingCartOutlined /> },
   { key: '/work-orders', label: '工单', icon: <FileTextOutlined /> },
   { key: '/profile', label: '我的', icon: <UserOutlined /> },
 ];
@@ -35,6 +36,7 @@ export default function MobileLayout() {
     if (path.startsWith('/parts')) return '/parts/new';
     if (path.startsWith('/inventory')) return '/inventory/inbound';
     if (path.startsWith('/tools')) return '/tools/borrow';
+    if (path.startsWith('/purchases')) return '/purchases/new';
     if (path.startsWith('/work-orders')) return '/work-orders/new';
     if (path.startsWith('/purchases')) return '/purchases/new';
     return null;

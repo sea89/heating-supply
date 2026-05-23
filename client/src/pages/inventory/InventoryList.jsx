@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Card, Table, Select, Tag, Space, Button, Modal, InputNumber, message } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import api from '../../api/client';
@@ -113,7 +113,7 @@ export default function InventoryList() {
       title: '型号',
       dataIndex: 'part_model',
       key: 'part_model',
-      responsive: ['md'],
+      //
     },
     {
       title: '单位',
@@ -132,14 +132,14 @@ export default function InventoryList() {
       dataIndex: 'shelf',
       key: 'shelf',
       width: 100,
-      responsive: ['sm'],
+      //
     },
     {
       title: '库位',
       dataIndex: 'bin',
       key: 'bin',
       width: 100,
-      responsive: ['sm'],
+      //
     },
     {
       title: '库存量',
