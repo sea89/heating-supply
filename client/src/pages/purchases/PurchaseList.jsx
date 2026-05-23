@@ -108,6 +108,7 @@ export default function PurchaseList() {
       dataIndex: 'priority',
       key: 'priority',
       width: 70,
+      responsive: ['md'],
       render: (val) => {
         const cfg = priorityConfig[val] || { color: 'default', text: val };
         return <Tag color={cfg.color}>{cfg.text}</Tag>;
@@ -118,6 +119,7 @@ export default function PurchaseList() {
       dataIndex: 'work_order_no',
       key: 'work_order_no',
       width: 130,
+      responsive: ['md'],
       render: (val, record) =>
         record.work_order_id
           ? <a onClick={(e) => { e.stopPropagation(); navigate(`/work-orders/${record.work_order_id}`); }}>{val || `#${record.work_order_id}`}</a>
@@ -163,12 +165,14 @@ export default function PurchaseList() {
       dataIndex: 'created_by_name',
       key: 'created_by_name',
       width: 80,
+      responsive: ['md'],
     },
     {
       title: '创建时间',
       dataIndex: 'created_at',
       key: 'created_at',
       width: 150,
+      responsive: ['md'],
       render: (val) => val || '-',
     },
   ];

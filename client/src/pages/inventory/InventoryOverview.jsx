@@ -51,6 +51,7 @@ export default function InventoryOverview() {
       dataIndex: 'part_model',
       key: 'part_model',
       responsive: ['md'],
+      responsive: ['md'],
     },
     {
       title: '库存量',
@@ -66,6 +67,7 @@ export default function InventoryOverview() {
       dataIndex: 'min_stock',
       key: 'min_stock',
       width: 100,
+      responsive: ['md'],
       render: (val) => val ?? 0,
     },
   ];

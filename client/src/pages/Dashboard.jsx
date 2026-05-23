@@ -77,6 +77,7 @@ export default function Dashboard() {
     <div>
       {/* Welcome Section */}
       <Card
+        className="dashboard-welcome-card"
         style={{
           marginBottom: 20,
           background: 'linear-gradient(135deg, #FFF1E8 0%, #FFD8C4 100%)',
@@ -85,32 +86,35 @@ export default function Dashboard() {
         }}
         bodyStyle={{ padding: '20px 24px' }}
       >
-        <Row align="middle" justify="space-between">
-          <Col>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{
-                width: 48, height: 48, borderRadius: 12,
-                background: 'linear-gradient(135deg, #D4380D, #FA8C16)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <FireOutlined style={{ fontSize: 24, color: '#fff' }} />
-              </div>
-              <div>
-                <h2 style={{ margin: 0, fontSize: 20, color: '#1a1a1a' }}>
-                  欢迎回来，{user?.name}
-                </h2>
-                <p style={{ margin: '4px 0 0', color: '#8C3B1A', fontSize: 14 }}>
-                  当前角色：{roleDisplayNames[user?.role] || user?.role}
-                </p>
-              </div>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 200, flex: 1 }}>
+            <div style={{
+              width: 48, height: 48, borderRadius: 12,
+              background: 'linear-gradient(135deg, #D4380D, #FA8C16)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <FireOutlined style={{ fontSize: 24, color: '#fff' }} />
             </div>
-          </Col>
-          <Col>
-            <Tag color="orange" style={{ fontSize: 13, padding: '4px 12px', borderRadius: 4 }}>
-              {new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
-            </Tag>
-          </Col>
-        </Row>
+            <div>
+              <h2 style={{ margin: 0, fontSize: 20, color: '#1a1a1a' }}>
+                欢迎回来，{user?.name}
+              </h2>
+              <p style={{ margin: '4px 0 0', color: '#8C3B1A', fontSize: 14 }}>
+                当前角色：{roleDisplayNames[user?.role] || user?.role}
+              </p>
+            </div>
+          </div>
+          <Tag className="dashboard-date-tag" color="orange" style={{ fontSize: 13, padding: '4px 12px', borderRadius: 4 }}>
+            {new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
+          </Tag>
+        </div>
       </Card>
 
       {/* Statistics Cards */}
@@ -264,3 +268,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

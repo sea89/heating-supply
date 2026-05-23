@@ -113,6 +113,7 @@ export default function InventoryList() {
       title: '型号',
       dataIndex: 'part_model',
       key: 'part_model',
+      responsive: ['md'],
       //
     },
     {
@@ -120,18 +121,21 @@ export default function InventoryList() {
       dataIndex: 'unit',
       key: 'unit',
       width: 80,
+      responsive: ['md'],
     },
     {
       title: '仓库',
       dataIndex: 'warehouse',
       key: 'warehouse',
       width: 100,
+      responsive: ['md'],
     },
     {
       title: '货架',
       dataIndex: 'shelf',
       key: 'shelf',
       width: 100,
+      responsive: ['md'],
       //
     },
     {
@@ -139,6 +143,7 @@ export default function InventoryList() {
       dataIndex: 'bin',
       key: 'bin',
       width: 100,
+      responsive: ['md'],
       //
     },
     {
@@ -161,6 +166,7 @@ export default function InventoryList() {
       title: '操作',
       key: 'actions',
       width: 100,
+      responsive: ['md'],
       render: (_, record) => (
         <Button
           type="link"

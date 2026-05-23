@@ -99,6 +99,8 @@ export default function ToolList() {
       dataIndex: 'model',
       key: 'model',
       width: 120,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (val) => val || '-',
     },
     {
@@ -106,6 +108,8 @@ export default function ToolList() {
       dataIndex: 'quantity',
       key: 'quantity',
       width: 60,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (val) => val ?? 1,
     },
     {
@@ -113,6 +117,8 @@ export default function ToolList() {
       dataIndex: 'unit_price',
       key: 'unit_price',
       width: 100,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (val) => val != null ? `¥${Number(val).toFixed(2)}` : '-',
     },
     {
@@ -131,6 +137,8 @@ export default function ToolList() {
       dataIndex: 'location',
       key: 'location',
       width: 120,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (val) => val || '-',
     },
     {
@@ -138,6 +146,8 @@ export default function ToolList() {
       dataIndex: 'current_borrower',
       key: 'current_borrower',
       width: 120,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (val) => val || '-',
     },
     {
@@ -236,13 +246,14 @@ export default function ToolList() {
           options={statusOptions}
         />
       </Space>
-      <Table
+      <div style={{ overflowX: 'auto' }}><Table
         rowKey="id"
         columns={columns}
         dataSource={data}
         loading={loading}
         pagination={false}
       />
+      </div>
       <Modal
         title={editingTool ? '编辑工具' : '新建工具'}
         open={formVisible}
@@ -265,3 +276,5 @@ export default function ToolList() {
     </Card>
   );
 }
+
+

@@ -181,7 +181,7 @@ export default function PurchaseForm() {
         form={form}
         layout="vertical"
         onFinish={onFinish}
-        style={{ maxWidth: 800 }}
+        style={{ maxWidth: '100%' }}
         initialValues={{ priority: 'normal' }}
       >
         <Form.Item

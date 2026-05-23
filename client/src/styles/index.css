@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -102,3 +102,153 @@ body {
 .ant-descriptions-item-content {
   transition: background-color 0.2s ease;
 }
+
+/* ================================ */
+/* Mobile responsive overrides      */
+/* ================================ */
+@media (max-width: 767px) {
+  /* Welcome card: date tag below on small screens */
+  .dashboard-welcome-card .dashboard-date-tag {
+    margin-left: 60px;
+  }
+
+  @media (max-width: 480px) {
+    .dashboard-welcome-card .dashboard-date-tag {
+      margin-left: 0;
+    }
+  }
+
+  /* Form full-width adjustments */
+  .ant-form-item .ant-select {
+    width: 100% !important;
+  }
+  .ant-form-item .ant-input-number {
+    width: 100% !important;
+  }
+  .ant-space-compact {
+    width: 100% !important;
+  }
+
+  /* Page card margins on mobile */
+  .ant-card {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Table horizontal scroll containers */
+  [style*="overflowX: 'auto'"] {
+    margin: 0 -4px;
+    padding: 0 4px;
+  }
+  /* Increase card padding on mobile to avoid edge-to-edge look */
+  .ant-card-body {
+    padding: 16px !important;
+  }
+
+  /* Make form items full-width and easier to tap */
+  .ant-form-item {
+    margin-bottom: 16px !important;
+  }
+  .ant-form-item .ant-select,
+  .ant-form-item .ant-input-number,
+  .ant-form-item .ant-picker {
+    width: 100% !important;
+  }
+  .ant-input-number-group-wrapper {
+    width: 100% !important;
+  }
+
+  /* Increase touch target sizes */
+  .ant-btn {
+    min-height: 40px;
+    font-size: 14px !important;
+  }
+  .ant-btn-sm {
+    min-height: 32px;
+  }
+
+  /* Make tabs scrollable and compact */
+  .ant-tabs-nav {
+    margin-bottom: 12px !important;
+  }
+  .ant-tabs-tab {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* Ensure tables are readable (horizontal scroll is already set in JSX) */
+  .ant-table {
+    font-size: 12px !important;
+  }
+  .ant-table-thead > tr > th {
+    padding: 8px 6px !important;
+    font-size: 12px !important;
+  }
+  .ant-table-tbody > tr > td {
+    padding: 8px 6px !important;
+    font-size: 12px !important;
+  }
+
+  /* Make tag pills more compact */
+  .ant-tag {
+    font-size: 11px !important;
+    padding: 1px 6px !important;
+    line-height: 18px !important;
+  }
+
+  /* Stat cards compact layout */
+  .ant-statistic-title {
+    font-size: 12px !important;
+  }
+  .ant-statistic-content {
+    font-size: 22px !important;
+  }
+
+  /* List items: more breathing room */
+  .ant-list-item {
+    padding: 12px 0 !important;
+  }
+
+  /* Modal: use full width on small screens */
+  .ant-modal {
+    max-width: calc(100vw - 32px) !important;
+    margin: 16px auto !important;
+  }
+
+  /* Descriptions: single column compact */
+  .ant-descriptions-item-label,
+  .ant-descriptions-item-content {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+  }
+
+  /* Space wrappers: allow wrapping naturally */
+  .ant-space {
+    flex-wrap: wrap !important;
+  }
+
+  /* Card header spacing */
+  .ant-card-head {
+    padding: 0 16px !important;
+    min-height: 44px !important;
+  }
+  .ant-card-head-title {
+    font-size: 15px !important;
+    padding: 12px 0 !important;
+  }
+  .ant-card-extra {
+    padding: 12px 0 !important;
+  }
+
+  /* Ensure content doesn't go under bottom nav */
+  .mobile-content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Proper bottom spacing for fixed nav */
+  .mobile-layout {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+

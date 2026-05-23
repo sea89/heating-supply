@@ -77,12 +77,16 @@ export default function PartList() {
       title: '型号',
       dataIndex: 'model',
       key: 'model',
+      responsive: ['md'],
+      responsive: ['md'],
       
     },
     {
       title: '分类',
       dataIndex: 'category_name',
       key: 'category_name',
+      responsive: ['md'],
+      responsive: ['md'],
       
     },
     {
@@ -90,6 +94,8 @@ export default function PartList() {
       dataIndex: 'unit_price',
       key: 'unit_price',
       width: 100,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (val) => val != null ? `¥${Number(val).toFixed(2)}` : '-',
       
     },
@@ -97,6 +103,8 @@ export default function PartList() {
       title: '库存总价(元)',
       key: 'total_value',
       width: 120,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (_, record) => {
         const total = (record.current_stock || 0) * (record.unit_price || 0);
         return total > 0
@@ -110,6 +118,8 @@ export default function PartList() {
       dataIndex: 'unit',
       key: 'unit',
       width: 80,
+      responsive: ['md'],
+      responsive: ['md'],
       
     },
     {
@@ -130,6 +140,8 @@ export default function PartList() {
       title: '操作',
       key: 'action',
       width: 160,
+      responsive: ['md'],
+      responsive: ['md'],
       render: (_, record) => (
         <Space size="small">
           <Button
@@ -237,7 +249,7 @@ export default function PartList() {
           fieldNames={{ label: 'name', value: 'id', children: 'children' }}
         />
       </Space>
-      <Table
+      <div style={{ overflowX: 'auto' }}><Table
         rowKey="id"
         columns={columns}
         dataSource={data}
@@ -253,7 +265,8 @@ export default function PartList() {
             setPageSize(ps);
           },
         }}
-      />
+      /></div>
     </Card>
   );
 }
+

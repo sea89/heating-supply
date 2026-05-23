@@ -65,7 +65,7 @@ export default function WorkOrderForm() {
         form={form}
         layout="vertical"
         onFinish={onFinish}
-        style={{ maxWidth: 800 }}
+        style={{ maxWidth: '100%' }}
       >
         <Form.Item label="系统分类">
           <Select
@@ -137,7 +137,7 @@ export default function WorkOrderForm() {
                   style={{ display: 'flex', marginBottom: 12, flexWrap: 'wrap' }}
                   align="baseline"
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
                     <Form.Item
                       {...restField}
                       name={[name, 'part_id']}
@@ -145,7 +145,7 @@ export default function WorkOrderForm() {
                     >
                       <Select
                         showSearch
-                        style={{ width: 260 }}
+                        style={{ width: '100%' }}
                         placeholder="选择备件（可选）"
                         allowClear
                         filterOption={(input, option) =>
@@ -158,7 +158,7 @@ export default function WorkOrderForm() {
                       />
                     </Form.Item>
                     <Form.Item {...restField} name={[name, 'custom_name']} style={{ marginBottom: 0 }}>
-                      <Input style={{ width: 260 }} placeholder="或输入自定义备件名称" />
+                      <Input style={{ width: '100%' }} placeholder="或输入自定义备件名称" />
                     </Form.Item>
                   </div>
                   <Form.Item
@@ -202,3 +202,4 @@ export default function WorkOrderForm() {
     </Card>
   );
 }
+

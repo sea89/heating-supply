@@ -63,6 +63,7 @@ export default function WorkOrderList() {
     },
     {
       title: '负责人',
+      responsive: ['md'],
       dataIndex: 'assignee_name',
       key: 'assignee_name',
       width: 100,
@@ -80,6 +81,7 @@ export default function WorkOrderList() {
     },
     {
       title: '创建时间',
+      responsive: ['md'],
       dataIndex: 'created_at',
       key: 'created_at',
       width: 160,
@@ -107,7 +109,7 @@ export default function WorkOrderList() {
         items={tabItems}
         style={{ marginBottom: 16 }}
       />
-      <Table
+      <div style={{ overflowX: 'auto' }}><Table
         rowKey="id"
         columns={columns}
         dataSource={data}
@@ -117,7 +119,7 @@ export default function WorkOrderList() {
           style: { cursor: 'pointer' },
         })}
         pagination={false}
-      />
+      /></div>
     </Card>
   );
 }

@@ -18,6 +18,7 @@ const tabs = [
   { key: '/inventory', label: '库存', icon: <DatabaseOutlined /> },
   { key: '/purchases', label: '采购', icon: <ShoppingCartOutlined /> },
   { key: '/work-orders', label: '工单', icon: <FileTextOutlined /> },
+  { key: '/tools', label: '工具', icon: <ToolOutlined /> },
   { key: '/profile', label: '我的', icon: <UserOutlined /> },
 ];
 
@@ -35,10 +36,9 @@ export default function MobileLayout() {
     const path = location.pathname;
     if (path.startsWith('/parts')) return '/parts/new';
     if (path.startsWith('/inventory')) return '/inventory/inbound';
-    if (path.startsWith('/tools')) return '/tools/borrow';
     if (path.startsWith('/purchases')) return '/purchases/new';
     if (path.startsWith('/work-orders')) return '/work-orders/new';
-    if (path.startsWith('/purchases')) return '/purchases/new';
+    if (path.startsWith('/tools')) return '/tools/borrow';
     return null;
   };
 
@@ -46,7 +46,7 @@ export default function MobileLayout() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <div style={{ flex: 1, overflow: 'auto', paddingBottom: 56 }}>
+      <div style={{ flex: 1, overflow: 'auto', paddingBottom: 64 }}>
         <Outlet />
       </div>
       <div
@@ -62,6 +62,7 @@ export default function MobileLayout() {
           alignItems: 'center',
           zIndex: 1000,
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+          overflow: 'hidden',
         }}
       >
         {tabs.map((tab) => {
@@ -78,26 +79,27 @@ export default function MobileLayout() {
                 justifyContent: 'center',
                 cursor: 'pointer',
                 color: isActive ? '#D4380D' : '#999',
-                fontSize: 11,
-                gap: 2,
+                fontSize: 10,
+                gap: 1,
                 userSelect: 'none',
-                padding: '4px 0',
+                padding: '4px 0 6px',
                 position: 'relative',
+                minWidth: 0,
               }}
             >
               {isActive && (
                 <div style={{
                   position: 'absolute',
                   top: 0,
-                  left: '25%',
-                  right: '25%',
+                  left: '20%',
+                  right: '20%',
                   height: 2,
                   background: '#D4380D',
                   borderRadius: '0 0 2px 2px',
                 }} />
               )}
               <span style={{ fontSize: 20, lineHeight: 1 }}>{tab.icon}</span>
-              <span>{tab.label}</span>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{tab.label}</span>
             </div>
           );
         })}
