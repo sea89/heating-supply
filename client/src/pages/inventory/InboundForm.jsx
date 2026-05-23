@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Card, Button, Form, Input, InputNumber, Select, Space, message } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -114,7 +114,7 @@ export default function InboundForm() {
     }
     setLoading(true);
     try {
-      await api.post('/api/inventory/inbound', { items });
+      await api.post('/api/inventory/inbound', { items: items.map(item => ({ ...item, purchase_order_id: selectedPurchaseOrderId })) });
       message.success('入库成功');
       if (selectedPurchaseOrderId) {
         navigate(`/purchases/${selectedPurchaseOrderId}`);

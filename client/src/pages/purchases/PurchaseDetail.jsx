@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
+import { InputNumber, Popconfirm } from 'antd';
 import { Card, Descriptions, Table, Tag, Button, Space, message } from 'antd';
 import { DetailSkeleton } from '../../components/PageSkeleton';
 import { ArrowLeftOutlined, EditOutlined, ImportOutlined } from '@ant-design/icons';
@@ -22,11 +23,24 @@ export default function PurchaseDetail() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [purchase, setPurchase] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
+  const [editQty, setEditQty] = useState(0);
 
   useEffect(() => {
     fetchPurchase();
   }, [id]);
 
+  
+  const handleSaveQuantity = async (itemId) => {
+    try {
+      await api.put(`/api/purchases/${id}/items/${itemId}`, { quantity: editQty });
+      message.success('数量已更新');
+      setEditingItem(null);
+      fetchPurchase();
+    } catch (err) {
+      message.error(err.response?.data?.error || '更新失败');
+    }
+  };
   const fetchPurchase = async () => {
     setLoading(true);
     try {
@@ -81,7 +95,39 @@ export default function PurchaseDetail() {
     },
     { title: '单价(元)', dataIndex: 'unit_price', key: 'unit_price', width: 100, render: (val) => val != null ? `¥${val.toFixed(2)}` : '-' },
     { title: '小计(元)', dataIndex: 'total_price', key: 'total_price', width: 100, render: (val) => val != null ? <span style={{ fontWeight: 500, color: '#722ed1' }}>¥{val.toFixed(2)}</span> : '-' },
-    { title: '订购数量', dataIndex: 'quantity', key: 'quantity', width: 100 },
+        {
+      title: '订购数量', dataIndex: 'quantity', key: 'quantity', width: 130,
+      render: (val, record) => {
+        if (editingItem === record.id) {
+          return (
+            <Space size="small">
+              <InputNumber
+                size="small"
+                style={{ width: 70 }}
+                min={record.arrived_quantity || 0}
+                value={editQty}
+                onChange={v => setEditQty(v)}
+              />
+              <Button size="small" type="primary" onClick={() => handleSaveQuantity(record.id)}>保存</Button>
+              <Button size="small" onClick={() => setEditingItem(null)}>取消</Button>
+            </Space>
+          );
+        }
+        return (
+          <Space size="small">
+            <span>{val}</span>
+            {(purchase.status === 'pending' || purchase.status === 'ordered') && (
+              <Button
+                size="small"
+                type="link"
+                icon={<EditOutlined />}
+                onClick={() => { setEditingItem(record.id); setEditQty(val); }}
+              />
+            )}
+          </Space>
+        );
+      }
+    },
     { title: '已到货数量', dataIndex: 'arrived_quantity', key: 'arrived_quantity', width: 100, render: (val) => val ?? 0 },
     {
       title: '状态',
