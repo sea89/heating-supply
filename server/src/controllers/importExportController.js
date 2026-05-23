@@ -628,7 +628,7 @@ export const uploadImport = async (req, res, next) => {
               const cat = await trx('part_categories').where({ name: catName }).first();
               if (cat) category_id = cat.id;
             }
-            const partId = await insertAndGetId(trx, 'parts', {
+            const [partId] = await trx('parts').insert({
               code,
               name,
               model: String(row.model || '').trim() || null,
@@ -637,7 +637,7 @@ export const uploadImport = async (req, res, next) => {
               category_id,
               min_stock: row.min_stock != null && row.min_stock !== '' ? Number(row.min_stock) : null,
               max_stock: row.max_stock != null && row.max_stock !== '' ? Number(row.max_stock) : null,
-            });
+            }).onConflict('code').ignore().returning('id');
 
             // Handle stock_quantity if provided (initial stock)
             const stockQty = row.stock_quantity != null && row.stock_quantity !== ''
@@ -801,13 +801,13 @@ export const uploadImport = async (req, res, next) => {
             continue;
           }
           try {
-            await insertAndGetId(trx, 'tools', {
+            await trx('tools').insert({
               code,
               name,
               model: String(row.model || '').trim() || null,
               category: String(row.category || '').trim() || null,
               location: String(row.location || '').trim() || null,
-            });
+            }).onConflict('code').ignore();
             results.imported.工具.success++;
             successCount++;
           } catch (e) {
