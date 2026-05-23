@@ -384,3 +384,12 @@ export const arrival = async (req, res, next) => {
     res.json({ success: true, status: result });
   } catch (err) { next(err); }
 };
+
+export const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await db('purchase_order_items').where({ purchase_order_id: id }).del();
+    await db('purchase_orders').where({ id }).del();
+    res.json({ success: true });
+  } catch (err) { next(err); }
+};

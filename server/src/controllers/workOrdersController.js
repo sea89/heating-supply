@@ -372,3 +372,12 @@ export const stockCheck = async (req, res, next) => {
     res.json({ items });
   } catch (err) { next(err); }
 };
+
+export const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await db('work_order_parts').where({ work_order_id: id }).del();
+    await db('work_orders').where({ id }).del();
+    res.json({ success: true });
+  } catch (err) { next(err); }
+};

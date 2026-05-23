@@ -13,3 +13,5 @@ router.post('/:id/complete', authenticate, ctrl.complete);
 router.get('/:id/stock-check', authenticate, ctrl.stockCheck);
 
 export default router;
+
+router.delete('/:id', authenticate, ctrl.remove);

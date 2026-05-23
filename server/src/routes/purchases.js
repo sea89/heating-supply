@@ -13,3 +13,5 @@ router.put('/:id/items/:itemId', authenticate, validate({ quantity: { required: 
 router.post('/:id/arrival', authenticate, validate({ items: { required: true, type: 'array', message: '请添加入库项' } }), ctrl.arrival);
 
 export default router;
+
+router.delete('/:id', authenticate, ctrl.remove);
