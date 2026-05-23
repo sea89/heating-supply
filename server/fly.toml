@@ -1,6 +1,4 @@
-﻿# fly.toml for heating-supply-server
-app = "heating-supply-server"
-primary_region = "hkg"
+app = "hs-app-sea89"
 
 [build]
   dockerfile = "Dockerfile"
