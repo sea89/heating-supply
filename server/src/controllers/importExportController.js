@@ -1,4 +1,4 @@
-import ExcelJS from 'exceljs';
+﻿import ExcelJS from 'exceljs';
 import db from '../config/database.js';
 
 // ──────────────────────────────────────────────
@@ -438,7 +438,8 @@ export const uploadImport = async (req, res, next) => {
     }
 
     // Use a transaction for the entire import
-    await db.transaction(async (trx) => {
+    // Use individual queries instead of single transaction to avoid cascading failures
+    const trx = db;  // Use knex instance directly, not in a transaction
       // ── 1. Import 系统分类 ──
       if (hasSystemCategory) {
         const rows = getSheetRows(wb, '系统分类');
@@ -501,7 +502,7 @@ export const uploadImport = async (req, res, next) => {
               model: String(row.model || '').trim() || null,
               location: String(row.location || '').trim() || null,
               system_category_id,
-            });
+            // End of individual imports
             results.imported.设备.success++;
             successCount++;
           } catch (e) {
@@ -565,7 +566,7 @@ export const uploadImport = async (req, res, next) => {
               contact_person: String(row.contact_person || '').trim() || null,
               phone: String(row.phone || '').trim() || null,
               address: String(row.address || '').trim() || null,
-            });
+            // End of individual imports
             results.imported.供应商.success++;
             successCount++;
           } catch (e) {
@@ -637,7 +638,7 @@ export const uploadImport = async (req, res, next) => {
               category_id,
               min_stock: row.min_stock != null && row.min_stock !== '' ? Number(row.min_stock) : null,
               max_stock: row.max_stock != null && row.max_stock !== '' ? Number(row.max_stock) : null,
-            });
+            // End of individual imports
 
             // Handle stock_quantity if provided (initial stock)
             const stockQty = row.stock_quantity != null && row.stock_quantity !== ''
@@ -653,7 +654,7 @@ export const uploadImport = async (req, res, next) => {
                     part_id: partId,
                     location_id: firstLocation.id,
                     quantity: stockQty,
-                  });
+                  // End of individual imports
                 }
               }
             }
@@ -726,7 +727,7 @@ export const uploadImport = async (req, res, next) => {
                 shelf,
                 bin,
                 type: String(row.type || '').trim() || 'normal',
-              });
+              // End of individual imports
             }
             results.imported.库位.success++;
             successCount++;
@@ -778,7 +779,7 @@ export const uploadImport = async (req, res, next) => {
                 part_id: part.id,
                 location_id: location.id,
                 quantity,
-              });
+              // End of individual imports
             }
             results.imported.库存.success++;
             successCount++;
@@ -807,7 +808,7 @@ export const uploadImport = async (req, res, next) => {
               model: String(row.model || '').trim() || null,
               category: String(row.category || '').trim() || null,
               location: String(row.location || '').trim() || null,
-            });
+            // End of individual imports
             results.imported.工具.success++;
             successCount++;
           } catch (e) {
@@ -815,13 +816,13 @@ export const uploadImport = async (req, res, next) => {
           }
         }
       }
-    });
+    // End of individual imports
 
     res.json({
       success: true,
       message: `导入完成，成功导入 ${successCount} 条记录`,
       details: results,
-    });
+    // End of individual imports
   } catch (err) {
     next(err);
   }
@@ -849,7 +850,7 @@ function getSheetRows(wb, sheetName) {
       if (key != null) {
         obj[key] = cell.text;
       }
-    });
+    // End of individual imports
     // Only add rows that have at least one non-empty value
     const hasValue = Object.values(obj).some(v => v != null && String(v).trim() !== '');
     if (hasValue) {
