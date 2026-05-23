@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Row, Col, Card, Statistic, Table, Tag, message } from 'antd';
-import { InboxOutlined, WarningOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { Row, Col, Card, Statistic, Table, Tag, message, Button } from 'antd';
+import { InboxOutlined, WarningOutlined, ArrowDownOutlined, ArrowUpOutlined, RightOutlined } from '@ant-design/icons';
 import api from '../../api/client';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function InventoryOverview() {
+    const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [overview, setOverview] = useState({
     total_parts: 0,
@@ -79,6 +82,8 @@ export default function InventoryOverview() {
           <Card>
             <Statistic
               title="总库存备件数"
+            hoverable
+            onClick={() => navigate('/inventory/stock')}
               value={overview.total_parts}
               prefix={<InboxOutlined />}
               valueStyle={{ color: '#1890ff' }}
@@ -89,6 +94,8 @@ export default function InventoryOverview() {
           <Card>
             <Statistic
               title="低库存预警"
+            hoverable
+            onClick={() => navigate('/inventory/stock')}
               value={overview.alert_count}
               prefix={<WarningOutlined />}
               valueStyle={{ color: '#ff4d4f' }}
@@ -99,6 +106,8 @@ export default function InventoryOverview() {
           <Card>
             <Statistic
               title="今日入库"
+            hoverable
+            onClick={() => navigate('/inventory/inbound')}
               value={overview.today_inbound}
               prefix={<ArrowDownOutlined />}
               valueStyle={{ color: '#52c41a' }}
@@ -109,6 +118,8 @@ export default function InventoryOverview() {
           <Card>
             <Statistic
               title="今日出库"
+            hoverable
+            onClick={() => navigate('/inventory/outbound')}
               value={overview.today_outbound}
               prefix={<ArrowUpOutlined />}
               valueStyle={{ color: '#fa8c16' }}
@@ -123,6 +134,10 @@ export default function InventoryOverview() {
           dataSource={lowStockItems}
           loading={loading}
           pagination={false}
+          onRow={(record) => ({
+            onClick: () => navigate('/inventory/stock?part_id=' + record.part_code),
+            style: { cursor: 'pointer' },
+          })}
         />
       </Card>
     </>

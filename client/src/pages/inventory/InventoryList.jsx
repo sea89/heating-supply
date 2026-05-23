@@ -176,16 +176,25 @@ export default function InventoryList() {
       title: '操作',
       key: 'actions',
       width: 100,
-      responsive: ['md'],
       render: (_, record) => (
-        <Button
-          type="link"
-          size="small"
-          icon={<EditOutlined />}
-          onClick={() => showAdjustModal(record)}
-        >
-          调整
-        </Button>
+        <Space>
+          <Button
+            type="link"
+            size="small"
+            icon={<EditOutlined />}
+            onClick={() => showAdjustModal(record)}
+          >
+            调整
+          </Button>
+          <Popconfirm
+            title="确定要删除该库存记录吗？"
+            onConfirm={() => handleDeleteStock(record.id)}
+          >
+            <Button type="link" size="small" danger icon={<DeleteOutlined />}>
+              删除
+            </Button>
+          </Popconfirm>
+        </Space>
       ),
     },
   ];
