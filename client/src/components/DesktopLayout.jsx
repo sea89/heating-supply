@@ -17,6 +17,10 @@ import {
 const { Sider, Content, Header } = Layout;
 
 function buildMenuItems(role) {
+  const isAdmin = role === 'admin';
+  const isWarehouse = role === 'warehouse';
+  const isMtn = role === 'maintenance';
+  const isPrc = role === 'procurement';
   const items = [
     {
       key: '/',
@@ -79,6 +83,19 @@ function buildMenuItems(role) {
       ],
     },
   ];
+  if (isAdmin || isWarehouse) {
+    var pi = items.find(function(i) { return i.key === 'parts'; });
+    if (pi) {
+      pi.children.push({ key: '/parts/new', label: '????' });
+      pi.children.push({ key: '/parts/categories', label: '????' });
+    }
+  }
+  if (isAdmin) {
+    var bd = items.find(function(i) { return i.key === 'basic-data'; });
+    if (bd) {
+      bd.children.push({ key: '/basic-data/accounts', label: '????', icon: <UserOutlined /> });
+    }
+  }
   return items;
 }
 

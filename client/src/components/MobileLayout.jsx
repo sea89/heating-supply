@@ -1,4 +1,5 @@
 ﻿import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   AppstoreOutlined,
   DatabaseOutlined,
@@ -12,7 +13,7 @@ import {
 } from '@ant-design/icons';
 import { FloatButton } from 'antd';
 
-const tabs = [
+const allTabs = [
   { key: '/', label: '首页', icon: <DashboardOutlined /> },
   { key: '/parts', label: '备件', icon: <AppstoreOutlined /> },
   { key: '/inventory', label: '库存', icon: <DatabaseOutlined /> },
@@ -23,9 +24,27 @@ const tabs = [
 ];
 
 export default function MobileLayout() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
+  const role = user?.role;
+  const admin = role === 'admin';
+  const wh = role === 'warehouse';
+  const mt = role === 'maintenance';
+  const pr = role === 'procurement';
+  const canInventory = admin || wh;
+  const canPurchases = admin || wh || pr;
+  const canWorkOrders = admin || wh || mt;
+  const tabs = allTabs.filter(function(t) {
+    if (admin) return true;
+    if (t.key === '/inventory' || t.key === '/parts') return admin || wh;
+    if (t.key === '/purchases') return canPurchases;
+    if (t.key === '/work-orders') return canWorkOrders;
+    if (t.key === '/tools') return true;
+    if (t.key === '/profile') return true;
+    return true;
+  });
   const activeKey = tabs.find((t) => {
     if (t.key === '/') return location.pathname === '/';
     if (t.key === '/profile') return location.pathname === '/profile';
