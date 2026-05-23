@@ -173,7 +173,7 @@ export default function InboundForm() {
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                       }
                       options={parts.map((p) => ({
-                        label: `${p.code} - ${p.name}`,
+                        label: `${p.code} - ${p.name}${p.model ? ' (' + p.model + ')' : ''}`,
                         value: p.id,
                       }))}
                     />
