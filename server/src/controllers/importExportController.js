@@ -501,8 +501,7 @@ export const uploadImport = async (req, res, next) => {
               model: String(row.model || '').trim() || null,
               location: String(row.location || '').trim() || null,
               system_category_id,
-            }).onConflict('code').ignore().returning('id');
-            
+            });
             results.imported.设备.success++;
             successCount++;
           } catch (e) {
@@ -622,15 +621,14 @@ export const uploadImport = async (req, res, next) => {
             results.errors.push(`备件: 跳过缺少编码或名称的行`);
             continue;
           }
-
-            try {
+          try {
             let category_id = null;
             const catName = String(row.category || '').trim();
             if (catName) {
               const cat = await trx('part_categories').where({ name: catName }).first();
               if (cat) category_id = cat.id;
             }
-            const [partId] = await trx('parts').insert({
+            const partId = await insertAndGetId(trx, 'parts', {
               code,
               name,
               model: String(row.model || '').trim() || null,
@@ -639,7 +637,7 @@ export const uploadImport = async (req, res, next) => {
               category_id,
               min_stock: row.min_stock != null && row.min_stock !== '' ? Number(row.min_stock) : null,
               max_stock: row.max_stock != null && row.max_stock !== '' ? Number(row.max_stock) : null,
-            }).onConflict('code').ignore().returning('id');
+            });
 
             // Handle stock_quantity if provided (initial stock)
             const stockQty = row.stock_quantity != null && row.stock_quantity !== ''
