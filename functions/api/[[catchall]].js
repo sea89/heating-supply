@@ -3,15 +3,26 @@
   const url = new URL(request.url);
   const targetUrl = 'https://hs-app-4ist.onrender.com' + url.pathname + url.search;
 
-  const response = await fetch(targetUrl, {
-    method: request.method,
-    headers: request.headers,
-    body: request.method !== 'GET' && request.method !== 'HEAD' ? request.body : undefined,
-  });
+  // Forward only essential headers
+  const headers = new Headers();
+  if (request.headers.has('Authorization')) {
+    headers.set('Authorization', request.headers.get('Authorization'));
+  }
+  if (request.headers.has('Content-Type')) {
+    headers.set('Content-Type', request.headers.get('Content-Type'));
+  }
+  if (request.headers.has('Accept')) {
+    headers.set('Accept', request.headers.get('Accept'));
+  }
 
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: response.headers,
-  });
+  const init = {
+    method: request.method,
+    headers: headers,
+  };
+
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    init.body = request.body;
+  }
+
+  return fetch(targetUrl, init);
 }
