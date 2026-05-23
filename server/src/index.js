@@ -16,17 +16,22 @@ import workOrdersRoutes from './routes/workOrders.js';
 import importExportRoutes from './routes/importExport.js';
 import personnelRoutes from './routes/personnel.js';
 import backupRoutes from './routes/backup.js';
+import optionsRoutes from './routes/options.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: true,
+  origin: [
+    'https://heating-supply.pages.dev',
+    'http://localhost:5173',
+    'http://localhost:3000',
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  maxAge: 86400
-}));
+  maxAge: 86400,
+}));;
 app.use(express.json());
 app.use(requestLogger);
 
@@ -42,8 +47,12 @@ app.use('/api/purchases', purchasesRoutes);
 app.use('/api/work-orders', workOrdersRoutes);
 app.use('/api/import-export', importExportRoutes);
 app.use('/api/personnel', personnelRoutes);
+app.use('/api/options', optionsRoutes);
 app.use('/api/backup', backupRoutes);
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date().toISOString() });
+});
 app.use(errorHandler);
 
 app.listen(PORT, () => {

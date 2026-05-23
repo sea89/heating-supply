@@ -1,11 +1,12 @@
-import { Router } from 'express';
+﻿import { Router } from 'express';
 import { authenticate } from '../middleware/auth.js';
+import { validate } from '../middleware/validate.js';
 import * as ctrl from '../controllers/workOrdersController.js';
 
 const router = Router();
 
 router.get('/', authenticate, ctrl.list);
-router.post('/', authenticate, ctrl.create);
+router.post('/', authenticate, validate({ fault_description: { required: true, type: 'string', message: '请填写故障描述' } }), ctrl.create);
 router.get('/:id', authenticate, ctrl.getById);
 router.put('/:id', authenticate, ctrl.update);
 router.post('/:id/complete', authenticate, ctrl.complete);
