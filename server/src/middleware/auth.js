@@ -13,6 +13,18 @@ export function authenticate(req, res, next) {
   }
 }
 
+
+export function requireAccess(readRoles, writeRoles) {
+  return (req, res, next) => {
+    if (!req.user) return res.status(401).json({ error: '未登录' });
+    const isRead = ['GET', 'HEAD', 'OPTIONS'].includes(req.method);
+    const allowed = isRead ? readRoles : writeRoles;
+    if (allowed.includes('admin')) return next();
+    if (allowed.includes(req.user.role)) return next();
+    return res.status(403).json({ error: '权限不足' });
+  };
+}
+
 export function requireRole(...roles) {
   return (req, res, next) => {
     if (!req.user) {
