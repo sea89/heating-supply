@@ -4,7 +4,11 @@ import { PlusOutlined, SearchOutlined, UploadOutlined, DownloadOutlined, FileTex
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/client';
 
+import { useAuth } from "../../context/AuthContext";
+
 export default function PartList() {
+  const { user } = useAuth();
+  const isReadOnly = user?.role === "maintenance";
   const [deleteError, setDeleteError] = useState(null);
 
   const showDeleteError = (msg) => {
@@ -78,9 +82,8 @@ export default function PartList() {
       title: '名称',
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => (
-        <a onClick={() => navigate(`/parts/${record.id}`)}>{text}</a>
-      ),
+      render: (text, record) =>
+        isReadOnly ? <span>{text}</span> : <a onClick={() => navigate(`/parts/${record.id}`)}>{text}</a>,
     },
     {
       title: '型号',
@@ -100,7 +103,6 @@ export default function PartList() {
       dataIndex: 'unit_price',
       key: 'unit_price',
       width: 100,
-      responsive: ['md'],
       render: (val) => val != null ? `¥${Number(val).toFixed(2)}` : '-',
       
     },
@@ -232,7 +234,8 @@ export default function PartList() {
     <Card
       title="备件列表"
       extra={
-        <Space>
+        isReadOnly ? null : (
+          <Space>
           <Button icon={<FileTextOutlined />} onClick={handleDownloadTemplate}>
             下载模板
           </Button>
@@ -246,6 +249,7 @@ export default function PartList() {
             新增备件
           </Button>
         </Space>
+      )
       }
     >
       <Space style={{ marginBottom: 16 }}>
