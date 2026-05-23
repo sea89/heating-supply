@@ -66,10 +66,10 @@ export default function InventoryList() {
   const handleDeleteStock = async (id) => {
     try {
       await api.delete('/api/inventory/stock/' + id);
-      message.success('\u5e93\u5b58\u8bb0\u5f55\u5df2\u5220\u9664');
+      message.success('库存记录已删除');
       fetchStock();
     } catch (err) {
-      message.error(err.response?.data?.error || '\u5220\u9664\u5931\u8d25');
+      message.error(err.response?.data?.error || '删除失败');
     }
   };
 
