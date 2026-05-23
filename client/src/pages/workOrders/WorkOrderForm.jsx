@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Card, Form, Input, InputNumber, Select, Button, Space, message } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -42,7 +42,7 @@ export default function WorkOrderForm() {
       return;
     }
     for (const item of selectedParts) {
-      if (!item.part_id || !item.quantity) {
+      if (!item.part_id && !item.custom_name) { message.warning('请选择或输入备件'); return; } if (!item.quantity) {
         message.warning('请填写所有备件信息');
         return;
       }
@@ -137,24 +137,30 @@ export default function WorkOrderForm() {
                   style={{ display: 'flex', marginBottom: 12, flexWrap: 'wrap' }}
                   align="baseline"
                 >
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'part_id']}
-                    rules={[{ required: true, message: '请选择备件' }]}
-                  >
-                    <Select
-                      showSearch
-                      style={{ width: 260 }}
-                      placeholder="选择备件"
-                      filterOption={(input, option) =>
-                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                      }
-                      options={parts.map((p) => ({
-                        label: `${p.code} - ${p.name} (${p.model || '-'})`,
-                        value: p.id,
-                      }))}
-                    />
-                  </Form.Item>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'part_id']}
+                      style={{ marginBottom: 4 }}
+                    >
+                      <Select
+                        showSearch
+                        style={{ width: 260 }}
+                        placeholder="选择备件（可选）"
+                        allowClear
+                        filterOption={(input, option) =>
+                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={parts.map((p) => ({
+                          label: `${p.code} - ${p.name} (${p.model || '-'})`,
+                          value: p.id,
+                        }))}
+                      />
+                    </Form.Item>
+                    <Form.Item {...restField} name={[name, 'custom_name']} style={{ marginBottom: 0 }}>
+                      <Input style={{ width: 260 }} placeholder="或输入自定义备件名称" />
+                    </Form.Item>
+                  </div>
                   <Form.Item
                     {...restField}
                     name={[name, 'quantity']}
