@@ -1,10 +1,19 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
-import { Table, Card, Input, TreeSelect, Button, Tag, Space, message, Popconfirm } from 'antd';
+import { Table, Card, Input, TreeSelect, Button, Tag, Space, message, Modal, Popconfirm } from 'antd';
 import { PlusOutlined, SearchOutlined, UploadOutlined, DownloadOutlined, FileTextOutlined, ArrowDownOutlined, ArrowUpOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/client';
 
 export default function PartList() {
+  const [deleteError, setDeleteError] = useState(null);
+
+  const showDeleteError = (msg) => {
+    if (msg.includes('关联数据')) {
+      setDeleteError(msg);
+    } else {
+      message.error(msg);
+    }
+  };
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -77,7 +86,6 @@ export default function PartList() {
       title: '型号',
       dataIndex: 'model',
       key: 'model',
-      responsive: ['md'],
       
     },
     {
@@ -135,7 +143,6 @@ export default function PartList() {
       title: '操作',
       key: 'action',
       width: 160,
-      responsive: ['md'],
       render: (_, record) => (
         <Space size="small">
           <Button
@@ -195,7 +202,7 @@ export default function PartList() {
       message.success('删除成功');
       fetchData();
     } catch (err) {
-      message.error(err.response?.data?.error || '删除失败');
+      showDeleteError(err.response?.data?.error || '删除失败');
     }
   };
 
@@ -278,6 +285,20 @@ export default function PartList() {
           },
         }}
       /></div>
+      <Modal
+        title="无法删除"
+        open={!!deleteError}
+        onCancel={() => setDeleteError(null)}
+        footer={[
+          <Button key="close" onClick={() => setDeleteError(null)}>关闭</Button>,
+          <Button key="goto" type="primary" onClick={() => { setDeleteError(null); navigate('/inventory/stock'); }}>
+            查看库存
+          </Button>,
+        ]}
+      >
+        <p>{deleteError}</p>
+        <p style={{ color: '#888', fontSize: 13 }}>请先清理相关库存记录后再删除此备件。</p>
+      </Modal>
     </Card>
   );
 }

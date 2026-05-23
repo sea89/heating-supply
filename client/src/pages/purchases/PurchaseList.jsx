@@ -75,6 +75,7 @@ export default function PurchaseList() {
       fetchData();
     } catch (err) {
       message.error(err.response?.data?.error || '删除失败');
+      fetchData();
     }
   };
 

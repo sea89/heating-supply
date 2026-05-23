@@ -30,6 +30,7 @@ export default function WorkOrderList() {
       fetchData();
     } catch (err) {
       message.error(err.response?.data?.error || '删除失败');
+      fetchData();
     }
   };
 

@@ -71,7 +71,11 @@ export default function ToolList() {
       message.success('删除成功');
       setRefreshFlag((f) => f + 1);
     } catch (err) {
-      message.error(err.response?.data?.error || '删除失败');
+      if (err.response?.data?.error && err.response.data.error.includes('关联数据')) {
+        message.error(err.response.data.error + '，请先处理关联记录');
+      } else {
+        message.error(err.response?.data?.error || '删除失败');
+      }
     }
   };
 
@@ -99,7 +103,6 @@ export default function ToolList() {
       dataIndex: 'model',
       key: 'model',
       width: 120,
-      responsive: ['md'],
       render: (val) => val || '-',
     },
     {
@@ -107,7 +110,6 @@ export default function ToolList() {
       dataIndex: 'quantity',
       key: 'quantity',
       width: 60,
-      responsive: ['md'],
       render: (val) => val ?? 1,
     },
     {
