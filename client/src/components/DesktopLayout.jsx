@@ -85,15 +85,12 @@ function buildMenuItems(role) {
   ];
   if (isAdmin || isWarehouse) {
     var pi = items.find(function(i) { return i.key === 'parts'; });
-    if (pi) {
-      pi.children.push({ key: '/parts/new', label: '????' });
-      pi.children.push({ key: '/parts/categories', label: '????' });
-    }
+    // parts/new and parts/categories already in main array
   }
   if (isAdmin) {
     var bd = items.find(function(i) { return i.key === 'basic-data'; });
     if (bd) {
-      bd.children.push({ key: '/basic-data/accounts', label: '????', icon: <UserOutlined /> });
+      bd.children.push({ key: '/basic-data/accounts', label: '账号管理', icon: <UserOutlined /> });
     }
   }
   return items;
