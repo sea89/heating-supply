@@ -78,8 +78,7 @@ function buildMenuItems(role) {
         { key: '/basic-data/equipment', label: '设备台账' },
         { key: '/basic-data/suppliers', label: '供应商' },
         { key: '/basic-data/personnel', label: '人员管理', icon: <TeamOutlined /> },
-        ...(role === 'admin' ? [{ key: '/basic-data/accounts', label: '账号管理', icon: <UserOutlined /> }] : []),
-        { key: '/backup', label: '数据备份' },
+                { key: '/backup', label: '数据备份' },
       ],
     },
   ];
