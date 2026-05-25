@@ -91,10 +91,36 @@ export const update = async (req, res, next) => {
 
 export const remove = async (req, res, next) => {
   try {
-    const existing = await db('locations').where({ id: req.params.id }).first();
-    if (!existing) return res.status(404).json({ error: '位置不存在' });
-    await db('locations').where({ id: req.params.id }).del();
-    res.json({ success: true });
+    const { id } = req.params;
+    const existing = await db('locations').where({ id }).first();
+    if (!existing) return res.status(404).json({ error: "位置不存在" });
+
+    const force = req.query.force === 'true';
+    var inboundR = await db('inbound_records').where({ location_id: id }).count('* as cnt').first();
+    var outboundR = await db('outbound_records').where({ location_id: id }).count('* as cnt').first();
+    var stockR = await db('stock_records').where({ location_id: id }).count('* as cnt').first();
+
+    var hasIn = Number(inboundR?.cnt || 0) > 0;
+    var hasOut = Number(outboundR?.cnt || 0) > 0;
+    var hasSt = Number(stockR?.cnt || 0) > 0;
+
+    if (!force && (hasIn || hasOut || hasSt)) {
+      var det = [];
+      if (hasIn) det.push('入库记录(' + inboundR.cnt + ')');
+      if (hasOut) det.push('出库记录(' + outboundR.cnt + ')');
+      if (hasSt) det.push('库存记录(' + stockR.cnt + ')');
+      return res.status(409).json({
+        error: '该库位存在关联数据，无法删除',
+        details: det.join(', '),
+        related: { inbound: Number(inboundR?.cnt || 0), outbound: Number(outboundR?.cnt || 0), stock: Number(stockR?.cnt || 0) },
+      });
+    }
+
+    if (hasIn) await db('inbound_records').where({ location_id: id }).update({ location_id: null });
+    if (hasOut) await db('outbound_records').where({ location_id: id }).update({ location_id: null });
+    if (hasSt) await db('stock_records').where({ location_id: id }).del();
+    await db('locations').where({ id }).del();
+    res.json({ success: true, message: '已删除库位并清除关联数据' });
   } catch (err) { next(err); }
 };
 
