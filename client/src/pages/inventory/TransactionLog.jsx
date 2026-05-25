@@ -123,7 +123,10 @@ export default function TransactionLog() {
           <Button type="link" size="small" danger icon={<DeleteOutlined />}>删除</Button>
         </Popconfirm>
       ),
-    },\n  ];\n\n  return (
+    },
+  ];
+
+  return (
     <Card title="出入库记录">
       <Space style={{ marginBottom: 16 }}>
         <Select
