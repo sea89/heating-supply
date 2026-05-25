@@ -80,6 +80,23 @@ export const create = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
+
+export const updateByName = async (req, res, next) => {
+  try {
+    const { type, oldName, newName, warehouse } = req.body;
+
+    if (type === 'warehouse') {
+      await db('locations').where({ warehouse: oldName }).update({ warehouse: newName });
+    } else if (type === 'shelf') {
+      await db('locations').where({ warehouse, shelf: oldName }).update({ shelf: newName });
+    } else {
+      return res.status(400).json({ error: '无效的更新类型' });
+    }
+
+    res.json({ success: true });
+  } catch (err) { next(err); }
+};
+
 export const update = async (req, res, next) => {
   try {
     const existing = await db('locations').where({ id: req.params.id }).first();

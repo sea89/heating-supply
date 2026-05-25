@@ -12,5 +12,7 @@ router.post('/inbound', authenticate, requireAccess(["admin","warehouse"], ["adm
 router.post('/outbound', authenticate, requireAccess(["admin","warehouse","maintenance","procurement"], ["admin","warehouse","maintenance","procurement"]), validate({ items: { required: true, type: 'array', message: '请添加出库项' } }), ctrl.outbound);
 router.put('/stock', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.adjustStock);
 router.delete('/stock/:id', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.deleteStock);
+router.delete('/inbound/:id', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.deleteInbound);
+router.delete('/outbound/:id', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.deleteOutbound);
 
 export default router;

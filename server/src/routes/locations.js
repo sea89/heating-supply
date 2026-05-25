@@ -8,6 +8,7 @@ router.get('/tree', authenticate, requireAccess(["admin","warehouse"], ["admin",
 router.post('/transfer', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.transfer);
 router.get('/:id', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.getById);
 router.post('/', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.create);
+router.put('/update-name', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.updateByName);
 router.put('/:id', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.update);
 router.delete('/:id', authenticate, requireAccess(["admin","warehouse"], ["admin","warehouse"]), ctrl.remove);
 

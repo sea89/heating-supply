@@ -279,3 +279,44 @@ export const deleteStock = async (req, res, next) => {
     res.json({ success: true });
   } catch (err) { next(err); }
 };
+
+export const deleteInbound = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const record = await db('inbound_records').where({ id }).first();
+    if (!record) return res.status(404).json({ error: '记录不存在' });
+    // Reverse stock change
+    await db.transaction(async (trx) => {
+      var stock = await trx('stock_records').where({ part_id: record.part_id, location_id: record.location_id }).first();
+      if (stock) {
+        var newQty = Number(stock.quantity) - Number(record.quantity);
+        if (newQty <= 0) {
+          await trx('stock_records').where({ id: stock.id }).del();
+        } else {
+          await trx('stock_records').where({ id: stock.id }).update({ quantity: newQty });
+        }
+      }
+      await trx('inbound_records').where({ id }).del();
+    });
+    res.json({ success: true });
+  } catch (err) { next(err); }
+};
+
+export const deleteOutbound = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const record = await db('outbound_records').where({ id }).first();
+    if (!record) return res.status(404).json({ error: '记录不存在' });
+    // Reverse stock change
+    await db.transaction(async (trx) => {
+      var stock = await trx('stock_records').where({ part_id: record.part_id, location_id: record.location_id }).first();
+      if (stock) {
+        await trx('stock_records').where({ id: stock.id }).increment('quantity', Number(record.quantity));
+      } else {
+        await trx('stock_records').insert({ part_id: record.part_id, location_id: record.location_id, quantity: Number(record.quantity) });
+      }
+      await trx('outbound_records').where({ id }).del();
+    });
+    res.json({ success: true });
+  } catch (err) { next(err); }
+};

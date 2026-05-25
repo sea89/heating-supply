@@ -132,14 +132,25 @@ export default function LocationManage() {
       const values = await form.validateFields();
       if (editTarget) {
         // Edit mode - update existing location
-        var updateData = {};
-        if (modalType === 'warehouse') updateData.warehouse = values.name;
-        else if (modalType === 'shelf') updateData.shelf = values.name;
-        else if (modalType === 'bin') {
+        if (modalType === 'warehouse') {
+          await api.put('/api/locations/update-name', {
+            type: 'warehouse',
+            oldName: editTarget.name,
+            newName: values.name,
+          });
+        } else if (modalType === 'shelf') {
+          await api.put('/api/locations/update-name', {
+            type: 'shelf',
+            oldName: editTarget.name,
+            newName: values.name,
+            warehouse: editTarget.warehouseName,
+          });
+        } else if (modalType === 'bin') {
+          var updateData = {};
           updateData.bin = values.name;
           if (values.type) updateData.type = values.type;
+          await api.put('/api/locations/' + editTarget.id, updateData);
         }
-        await api.put('/api/locations/' + editTarget.id, updateData);
         message.success('修改成功');
         setEditTarget(null);
         setModalVisible(false);

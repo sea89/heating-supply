@@ -1,5 +1,6 @@
-﻿import { useState, useEffect, useCallback } from 'react';
-import { Card, Table, Select, DatePicker, Tag, Space, message } from 'antd';
+﻿import { DeleteOutlined } from '@ant-design/icons';
+import { useState, useEffect, useCallback } from 'react';
+import { Card, Table, Select, DatePicker, Tag, Space, message, Button, Popconfirm } from 'antd';
 import api from '../../api/client';
 
 const { RangePicker } = DatePicker;
@@ -38,6 +39,16 @@ export default function TransactionLog() {
 
   const handleFilterChange = () => {
     setPage(1);
+  };
+
+  const handleDelete = async (id, type) => {
+    try {
+      await api.delete('/api/inventory/' + type + '/' + id);
+      message.success('删除成功');
+      fetchTransactions();
+    } catch (err) {
+      message.error(err.response?.data?.error || '删除失败');
+    }
   };
 
   const typeOptions = [
@@ -103,9 +114,16 @@ export default function TransactionLog() {
       ellipsis: true,
       responsive: ['lg'],
     },
-  ];
-
-  return (
+    {
+      title: '操作',
+      key: 'action',
+      width: 80,
+      render: (_, record) => (
+        <Popconfirm title="确定要删除该记录吗？删除后将自动回退库存数量。" onConfirm={() => handleDelete(record.id, record.type)}>
+          <Button type="link" size="small" danger icon={<DeleteOutlined />}>删除</Button>
+        </Popconfirm>
+      ),
+    },\n  ];\n\n  return (
     <Card title="出入库记录">
       <Space style={{ marginBottom: 16 }}>
         <Select
