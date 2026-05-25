@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, Tree, Button, Modal, Form, Input, Select, Space, Popconfirm, message } from 'antd';
-import { PlusOutlined, DeleteOutlined, ApartmentOutlined, UploadOutlined, DownloadOutlined, FileTextOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EditOutlined, ApartmentOutlined, UploadOutlined, DownloadOutlined, FileTextOutlined } from '@ant-design/icons';
 import api from '../../api/client';
 
 export default function LocationManage() {
@@ -10,6 +10,7 @@ export default function LocationManage() {
   const [modalType, setModalType] = useState(null); // 'warehouse' | 'shelf' | 'bin'
   const [parentNode, setParentNode] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [editTarget, setEditTarget] = useState(null);
   const [form] = Form.useForm();
 
   const handleDownloadTemplate = () => {
@@ -112,6 +113,13 @@ export default function LocationManage() {
     }
   };
 
+  const openEditModal = (type, target) => {
+    setEditTarget(target);
+    setModalType(type);
+    form.setFieldsValue({ name: target.name });
+    setModalVisible(true);
+  };
+
   const openModal = (type, parent = null) => {
     setModalType(type);
     setParentNode(parent);
@@ -122,6 +130,23 @@ export default function LocationManage() {
   const handleModalOk = async () => {
     try {
       const values = await form.validateFields();
+      if (editTarget) {
+        // Edit mode - update existing location
+        var updateData = {};
+        if (modalType === 'warehouse') updateData.warehouse = values.name;
+        else if (modalType === 'shelf') updateData.shelf = values.name;
+        else if (modalType === 'bin') {
+          updateData.bin = values.name;
+          if (values.type) updateData.type = values.type;
+        }
+        await api.put('/api/locations/' + editTarget.id, updateData);
+        message.success('修改成功');
+        setEditTarget(null);
+        setModalVisible(false);
+        form.resetFields();
+        fetchTree();
+        return;
+      }
       if (modalType === 'warehouse') {
         await api.post('/api/locations', {
           warehouse: values.name,
@@ -171,6 +196,9 @@ export default function LocationManage() {
       >
         添加货架
       </Button>
+      <Button type="link" size="small" icon={<EditOutlined />}
+        onClick={(e) => { e.stopPropagation(); openEditModal('warehouse', { name: node.name, id: node.id }); }}
+      />
       {node.id && (
         <Popconfirm
           title="确认删除该仓库？"
@@ -203,6 +231,9 @@ export default function LocationManage() {
       >
         添加库位
       </Button>
+      <Button type="link" size="small" icon={<EditOutlined />}
+        onClick={(e) => { e.stopPropagation(); openEditModal('shelf', { name: shelf.name, id: shelf.id, warehouseName: warehouseName }); }}
+      />
       {shelf.id && (
         <Popconfirm
           title="确认删除该货架？"
@@ -234,6 +265,9 @@ export default function LocationManage() {
           （备件 {bin.part_count ?? 0} | 工具 {bin.tool_count ?? 0}）
         </span>
       </span>
+      <Button type="link" size="small" icon={<EditOutlined />}
+        onClick={(e) => { e.stopPropagation(); openEditModal('bin', { name: bin.name, id: bin.id, bin: bin }); }}
+      />
       {bin.id && (
         <Popconfirm
           title="确认删除该库位？"
@@ -253,6 +287,14 @@ export default function LocationManage() {
   );
 
   const getModalTitle = () => {
+    if (editTarget) {
+      switch (modalType) {
+        case 'warehouse': return '修改仓库名称';
+        case 'shelf': return '修改货架名称';
+        case 'bin': return '修改库位名称';
+        default: return '';
+      }
+    }
     switch (modalType) {
       case 'warehouse':
         return '添加仓库';
@@ -295,7 +337,7 @@ export default function LocationManage() {
         title={getModalTitle()}
         open={modalVisible}
         onOk={handleModalOk}
-        onCancel={() => setModalVisible(false)}
+        onCancel={() => { setModalVisible(false); setEditTarget(null); }}
         destroyOnClose
       >
         <Form form={form} layout="vertical">
