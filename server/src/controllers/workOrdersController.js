@@ -239,13 +239,30 @@ export const create = async (req, res, next) => {
       }).returning('id');
       const orderId = insertResult?.[0]?.id ?? insertResult?.id ?? insertResult;
 
-      if (parts && parts.length > 0) {
-        const orderParts = parts.map(item => ({
-          work_order_id: orderId,
-          part_id: item.part_id,
-          quantity: item.quantity,
-        }));
-        await trx('work_order_parts').insert(orderParts);
+            if (parts && parts.length > 0) {
+        const orderParts = [];
+        for (const item of parts) {
+          let partId = item.part_id;
+          if (!partId && item.custom_name) {
+            const now = new Date();
+            const ts = now.getFullYear() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0') + now.getHours().toString().padStart(2,'0') + now.getMinutes().toString().padStart(2,'0') + now.getSeconds().toString().padStart(2,'0');
+            const code = 'CUSTOM' + ts;
+            const [inserted] = await trx('parts').insert({
+              code,
+              name: item.custom_name,
+              model: item.custom_model || null,
+              unit: item.custom_unit || '个',
+              category_id: null,
+            }).returning('id');
+            partId = inserted?.id || inserted;
+          }
+          if (partId) {
+            orderParts.push({ work_order_id: orderId, part_id: partId, quantity: item.quantity });
+          }
+        }
+        if (orderParts.length > 0) {
+          await trx('work_order_parts').insert(orderParts);
+        }
       }
 
       return orderId;

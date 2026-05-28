@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, Form, Input, InputNumber, Select, Button, Space, message } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -159,9 +159,17 @@ export default function WorkOrderForm() {
                         }))}
                       />
                     </Form.Item>
-                    <Form.Item {...restField} name={[name, 'custom_name']} style={{ marginBottom: 0 }}>
-                      <Input style={{ width: '100%' }} placeholder="或输入自定义备件名称" />
-                    </Form.Item>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      <Form.Item {...restField} name={[name, 'custom_name']} style={{ marginBottom: 0, flex: '1 1 140px', minWidth: 140 }}>
+                        <Input placeholder="自定义名称" />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, 'custom_model']} style={{ marginBottom: 0, flex: '1 1 100px', minWidth: 100 }}>
+                        <Input placeholder="型号（可选）" />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, 'custom_unit']} style={{ marginBottom: 0, width: 60 }}>
+                        <Input placeholder="单位" defaultValue="个" />
+                      </Form.Item>
+                    </div>
                   </div>
                   <Form.Item
                     {...restField}
