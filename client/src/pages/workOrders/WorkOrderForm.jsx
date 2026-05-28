@@ -148,6 +148,8 @@ export default function WorkOrderForm() {
                         style={{ width: '100%' }}
                         placeholder="选择备件（可选）"
                         allowClear
+                        popupMatchSelectWidth={false}
+                        dropdownStyle={{ minWidth: 280 }}
                         filterOption={(input, option) =>
                           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                         }
