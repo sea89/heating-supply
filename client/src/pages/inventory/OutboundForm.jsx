@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, Button, Form, Input, InputNumber, Select, Space, message } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -18,6 +18,7 @@ export default function OutboundForm() {
   const [stockData, setStockData] = useState([]);
   const [loadedWorkOrder, setLoadedWorkOrder] = useState(false);
   const [presetWorkOrderInfo, setPresetWorkOrderInfo] = useState(null);
+  const [selectedPartIds, setSelectedPartIds] = useState({});
 
   const fetchParts = useCallback(async () => {
     try {
@@ -173,6 +174,7 @@ export default function OutboundForm() {
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                       }
+                      onChange={(val) => setSelectedPartIds(prev => ({ ...prev, [name]: val }))}
                       options={parts.map((p) => ({
                         label: `${p.code} - ${p.name}${p.model ? ' (' + p.model + ')' : ''}`,
                         value: p.id,
@@ -203,16 +205,16 @@ export default function OutboundForm() {
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                       }
-                      notFoundContent="请先选择备件"
-                      options={((() => {
-                        const partId = form.getFieldValue(['items', name, 'part_id']);
+                      notFoundContent={selectedPartIds[name] ? "该备件无库存" : "请先选择备件"}
+                      options={(() => {
+                        const partId = selectedPartIds[name];
                         if (!partId) return [];
                         const stockRows = stockData.filter(s => s.part_id === partId && Number(s.quantity) > 0);
                         return stockRows.map(s => ({
-                          label: `${s.warehouse || ''} ${s.shelf || ''} ${s.bin || ''}`.trim() + ` (库存: ${s.quantity})`,
+                          label: [s.warehouse, s.shelf, s.bin].filter(Boolean).join(' ') + ` (库存: ${s.quantity})`,
                           value: s.location_id,
                         }));
-                      })())}
+                      })()}
                     />
                   </Form.Item>
                   <Form.Item
